@@ -22,7 +22,7 @@ public class Smartwatch : Device, IPowerNotifier
         Console.WriteLine("Low battery!");
     }
 
-    public String toString()
+    public override string ToString()
     {
         return "Id: " + id + " name: " + Name + ", isTurnedOn: " + IsTurnedOn + ", battery: " + battery + "%";
     }

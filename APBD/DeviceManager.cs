@@ -4,7 +4,7 @@ namespace APBD;
 
 public class DeviceManager
 {
-    List<Device> devices = new List<Device>();
+    public List<Device> devices = new List<Device>();
 
     public DeviceManager(string filepath)
     {
