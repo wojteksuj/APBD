@@ -1,3 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using APBD;
 
-Console.WriteLine("Hello, World!");
+DeviceManager deviceManager = new DeviceManager("input.txt");
+deviceManager.showAllDevices();
