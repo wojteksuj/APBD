@@ -1,9 +1,10 @@
 namespace APBD;
 
-public abstract class Device
+public class Device
 {
-    private int id;
-    private string Name;
-    private bool IsDeviceTurnedOn;
-
+    public int id;
+    public string Name;
+    public bool IsTurnedOn;
+    
+    
 }
