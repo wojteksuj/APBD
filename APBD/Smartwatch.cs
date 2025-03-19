@@ -33,6 +33,7 @@ public class Smartwatch : Device, IPowerNotifier
         else
         {
             battery = battery - 10;
+            if(battery < 20) LowBatteryNotification();
             IsTurnedOn = true;
         }
     }
