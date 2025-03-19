@@ -94,6 +94,69 @@ public class DeviceManager
             Console.WriteLine(device.ToString());
         }
     }
+
+    public void addDevice(Device device)
+    {
+        try
+        {
+            if(devices.Count < 15) devices.Add(device);
+            else throw new Exception("Too many devices");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+
+    public void removeDevice(Device device)
+    {
+        try
+        {
+            if(devices.Contains(device)) devices.Remove(device);
+            else throw new Exception("Device not found");
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+
+    public void turnOnDevice(Device device)
+    {
+        device.turnOn();
+    }
+
+    public void turnOffDevice(Device device)
+    {
+        device.turnOff();
+    }
+
+    public void saveDataToFile(string filepath)
+    {
+        try
+        {
+            if (File.Exists(filepath))
+            {
+                foreach (Device device in devices)
+                {
+                    string line = device.ToString() + '\n';
+                    File.AppendAllText(filepath, line);
+                }
+            }
+            else
+            {
+                throw new FileNotFoundException("File not found");
+            }
+            
+            
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+    
     
     
     
