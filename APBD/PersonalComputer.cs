@@ -1,6 +1,8 @@
+using APBD.Resources;
+
 namespace APBD;
 
-public class PersonalComputer : Device
+public class PersonalComputer : Device 
 {
     String system = null;
 
@@ -11,7 +13,21 @@ public class PersonalComputer : Device
         this.IsTurnedOn = isTurnedOn;
         this.system = system;
     }
-    
-    
-    
+
+    public override string ToString()
+    {
+        return "Id: " + id + " name: " + Name + ", isTurnedOn: " + IsTurnedOn + ", System: " + system;
+    }
+
+    public override void turnOn()
+    {
+        if (system == null) throw new EmptySystemException();
+        IsTurnedOn = true;
+    }
+
+    public override void turnOff()
+    {
+        Console.WriteLine("PC is turning off...");
+        IsTurnedOn = false;
+    }
 }
