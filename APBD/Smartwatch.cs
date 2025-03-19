@@ -1,3 +1,6 @@
+using System.Security.AccessControl;
+using APBD.Resources;
+
 namespace APBD;
 
 public class Smartwatch : Device, IPowerNotifier
@@ -9,9 +12,14 @@ public class Smartwatch : Device, IPowerNotifier
         this.id = id;
         Name = name;
         IsTurnedOn = isTurnedOn;
-        if(battery < 0 || battery > 100) throw new ArgumentOutOfRangeException("battery", battery, "Battery must be between 0 and 100");
-        
+        if(battery < 0 | battery > 100) throw new ArgumentOutOfRangeException("battery", battery, "Battery must be between 0 and 100");
+        if(battery < 20) LowBatteryNotification();
         this.battery = battery;
+    }
+
+    public void LowBatteryNotification()
+    {
+        Console.WriteLine("Low battery!");
     }
 
     public String toString()
@@ -19,8 +27,19 @@ public class Smartwatch : Device, IPowerNotifier
         return "Id: " + id + " name: " + Name + ", isTurnedOn: " + IsTurnedOn + ", battery: " + battery + "%";
     }
 
-    public void LowBatteryNotification()
+    public override void turnOn()
     {
-        throw new NotImplementedException();
+        if (battery < 11) throw new EmptyBatteryException();
+        else
+        {
+            battery = battery - 10;
+            IsTurnedOn = true;
+        }
+    }
+
+    public override void turnOff()
+    {
+        Console.WriteLine("Smartwatch is turning off...");
+        IsTurnedOn = false;
     }
 }

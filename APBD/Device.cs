@@ -6,5 +6,9 @@ public class Device
     public string Name;
     public bool IsTurnedOn;
     
+    public virtual void turnOn(){}
+
+    public virtual void turnOff(){}
+    
     
 }
