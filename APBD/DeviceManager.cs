@@ -157,6 +157,53 @@ public class DeviceManager
         }
     }
     
+    public void editDeviceData(Device device, string newName = null, bool? isTurnedOn = null, int? battery = null, string newSystem = null, string newIpAddress = null, string newNetworkName = null)
+    {
+        try
+        {
+            if (!devices.Contains(device))
+            {
+                throw new Exception("Device not found in the list");
+            }
+            
+            if (!string.IsNullOrEmpty(newName))
+            {
+                device.Name = newName;
+            }
+
+            if (isTurnedOn.HasValue)
+            {
+                if (isTurnedOn.Value)
+                    device.turnOn();
+                else
+                    device.turnOff();
+            }
+            
+            if (device is Smartwatch smartwatch && battery.HasValue)
+            {
+                if (battery < 0 || battery > 100)
+                    throw new ArgumentOutOfRangeException("Battery must be between 0 and 100");
+                smartwatch.battery = battery.Value;
+            }
+            else if (device is PersonalComputer pc && !string.IsNullOrEmpty(newSystem))
+            {
+                pc.system = newSystem;
+            }
+            else if (device is EmbeddedDevices ed)
+            {
+                if (!string.IsNullOrEmpty(newIpAddress))
+                    ed.IpAddress = newIpAddress;
+
+                if (!string.IsNullOrEmpty(newNetworkName))
+                    ed.NetworkName = newNetworkName;
+            }
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+
     
     
     

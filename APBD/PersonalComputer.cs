@@ -4,7 +4,7 @@ namespace APBD;
 
 public class PersonalComputer : Device 
 {
-    string system = null;
+    public string system = null;
 
     public PersonalComputer(int id, string name, bool isTurnedOn, String system)
     {

@@ -5,7 +5,7 @@ namespace APBD;
 
 public class Smartwatch : Device, IPowerNotifier
 {
-    int battery;
+    public int battery;
 
     public Smartwatch(int id, string name, bool isTurnedOn, int battery)
     {   

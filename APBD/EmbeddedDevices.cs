@@ -6,8 +6,8 @@ namespace APBD;
 
 public class EmbeddedDevices : Device
 {
-    string IpAddress;
-    string NetworkName;
+    public string IpAddress;
+    public string NetworkName;
 
     public EmbeddedDevices(int id, string Name, bool isTurnedOn, string ipAddress, string networkName)
     {
