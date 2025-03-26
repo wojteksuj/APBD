@@ -11,7 +11,7 @@ public class EmbeddedDevices : Device
 
     public EmbeddedDevices(string id, string Name, bool isTurnedOn, string ipAddress, string networkName)
     {
-        if(Regex.IsMatch(ipAddress,@"^([0-9]{1,3}\.){3}[0-9]{1,3}$")) this.IpAddress = ipAddress;
+        if(Regex.IsMatch(ipAddress,"^((25[0-5]|(2[0-4]|1\\d|[1-9]|)\\d)\\.?\\b){4}$")) this.IpAddress = ipAddress;
         else throw new ArgumentException("Invalid IP Address");
         this.id = id;
         this.Name = Name;
