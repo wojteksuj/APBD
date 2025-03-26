@@ -5,7 +5,7 @@ DeviceManager deviceManager = new DeviceManager("input.txt");
 deviceManager.showAllDevices();
 
 Console.WriteLine("----------Adding new device!----------");
-Device newDevice = new Smartwatch(2, "Apple Watch 4", false, 90);
+Device newDevice = new Smartwatch("SW-2", "Apple Watch 4", false, 90);
 deviceManager.addDevice(newDevice);
 deviceManager.showAllDevices();
 

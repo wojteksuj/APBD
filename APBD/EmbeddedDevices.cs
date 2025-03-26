@@ -9,7 +9,7 @@ public class EmbeddedDevices : Device
     public string IpAddress;
     public string NetworkName;
 
-    public EmbeddedDevices(int id, string Name, bool isTurnedOn, string ipAddress, string networkName)
+    public EmbeddedDevices(string id, string Name, bool isTurnedOn, string ipAddress, string networkName)
     {
         if(Regex.IsMatch(ipAddress,@"^([0-9]{1,3}\.){3}[0-9]{1,3}$")) this.IpAddress = ipAddress;
         else throw new ArgumentException("Invalid IP Address");

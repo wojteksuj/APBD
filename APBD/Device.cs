@@ -2,7 +2,7 @@ namespace APBD;
 
 public class Device
 {
-    public int id;
+    public string id;
     public string Name;
     public bool IsTurnedOn;
     

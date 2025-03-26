@@ -19,7 +19,7 @@ public class DeviceManagerTest
         public void AddDeviceTest()
         {
             DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
-            Device smartwatch = new Smartwatch(1, "Watch", true, 90);
+            Device smartwatch = new Smartwatch("SW-1", "Watch", true, 90);
             
             deviceManager.addDevice(smartwatch);
             
@@ -33,7 +33,7 @@ public class DeviceManagerTest
             
             for (int i = 0; i < 20; i++)
             {
-                deviceManager.addDevice(new Smartwatch(i, "WatchNo." + i, true, 80));
+                deviceManager.addDevice(new Smartwatch("SW-" + i.ToString(), "WatchNo." + i, true, 80));
             }
             Assert.IsTrue(deviceManager.devices.Count == 15);
         }
@@ -41,7 +41,7 @@ public class DeviceManagerTest
         [TestMethod]
         public void RemoveDeviceTest()
         {
-            Device smartwatch = new Smartwatch(1, "Watch", true, 90);
+            Device smartwatch = new Smartwatch("SW-1", "Watch", true, 90);
             DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
             deviceManager.addDevice(smartwatch);
             
@@ -52,7 +52,7 @@ public class DeviceManagerTest
         [TestMethod]
         public void TurnOnDeviceTest()
         {
-            Device smartwatch = new Smartwatch(1, "Watch", false, 90);
+            Device smartwatch = new Smartwatch("SW-1", "Watch", false, 90);
             DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
             deviceManager.addDevice(smartwatch);
             
@@ -63,7 +63,7 @@ public class DeviceManagerTest
         [TestMethod]
         public void TurnOffDeviceTest()
         {
-            Device smartwatch = new Smartwatch(1, "Watch", true, 90);
+            Device smartwatch = new Smartwatch("SW-1", "Watch", true, 90);
             DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
             deviceManager.addDevice(smartwatch);
             
@@ -74,7 +74,7 @@ public class DeviceManagerTest
         [TestMethod]
         public void EditDeviceBatteryTest()
         {
-            Smartwatch smartwatch = new Smartwatch(1, "Watch", true, 90);
+            Smartwatch smartwatch = new Smartwatch("SW-1", "Watch", true, 90);
             DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
             deviceManager.addDevice(smartwatch);
             
@@ -86,7 +86,7 @@ public class DeviceManagerTest
         [TestMethod]
         public void EditDeviceDataSystemTest()
         {
-            PersonalComputer pc = new PersonalComputer(1, "PC", true, "Windows");
+            PersonalComputer pc = new PersonalComputer("SW-1", "PC", true, "Windows");
             DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
             deviceManager.addDevice(pc);
             deviceManager.editDeviceData(pc, newSystem: "Linux");
@@ -97,7 +97,7 @@ public class DeviceManagerTest
         [TestMethod]
         public void EditDeviceDataIpAddressTest()
         {
-            EmbeddedDevices embeddedDevice = new EmbeddedDevices(1, "ED", true, "192.168.1.1", "MD Ltd.");
+            EmbeddedDevices embeddedDevice = new EmbeddedDevices("SW-1", "ED", true, "192.168.1.1", "MD Ltd.");
             DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
             deviceManager.addDevice(embeddedDevice);
             deviceManager.editDeviceData(embeddedDevice, newIpAddress: "192.168.1.2");
@@ -110,9 +110,9 @@ public class DeviceManagerTest
         {
             var tempFilePath = CreateTempFile(new string[0]);
             DeviceManager deviceManager = new DeviceManager(tempFilePath);
-            Device smartwatch = new Smartwatch(1, "Watch", true, 90);
-            Device  pc = new PersonalComputer(2, "PC", true, "Windows");
-            Device  embeddedDevice = new EmbeddedDevices(3, "ED", true, "192.168.1.1", "MD Ltd.");
+            Device smartwatch = new Smartwatch("SW-1", "Watch", true, 90);
+            Device  pc = new PersonalComputer("SW-1", "PC", true, "Windows");
+            Device  embeddedDevice = new EmbeddedDevices("SW-1", "ED", true, "192.168.1.1", "MD Ltd.");
 
             deviceManager.addDevice(smartwatch);
             deviceManager.addDevice(pc);

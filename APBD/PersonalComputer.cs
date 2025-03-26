@@ -6,7 +6,7 @@ public class PersonalComputer : Device
 {
     public string system = null;
 
-    public PersonalComputer(int id, string name, bool isTurnedOn, String system)
+    public PersonalComputer(string id, string name, bool isTurnedOn, String system)
     {
         this.id = id;
         this.Name = name;

@@ -13,8 +13,8 @@ public class PersonalComputerTest
     [TestMethod]
         public void ConstructorTest()
         {
-            Device pc = new PersonalComputer(1, "MyPC", false, "Windows");
-            Assert.AreEqual(1, pc.id);
+            Device pc = new PersonalComputer("1", "MyPC", false, "Windows");
+            Assert.AreEqual("1", pc.id);
             Assert.AreEqual("MyPC", pc.Name);
             Assert.AreEqual(false, pc.IsTurnedOn);
             Assert.AreEqual("Id: 1 name: MyPC, isTurnedOn: False, System: Windows", pc.ToString());
@@ -24,14 +24,14 @@ public class PersonalComputerTest
         [ExpectedException(typeof(EmptySystemException))]
         public void NullSystemExceptionTest()
         {
-            Device pc = new PersonalComputer(1, "MyPC", false, null);
+            Device pc = new PersonalComputer("1", "MyPC", false, null);
             pc.turnOn();
         }
 
         [TestMethod]
         public void TurnOnTest()
         {
-            Device pc = new PersonalComputer(1, "MyPC", false, "Windows");
+            Device pc = new PersonalComputer("1", "MyPC", false, "Windows");
             pc.turnOn();
             Assert.AreEqual(true, pc.IsTurnedOn);
             Assert.AreEqual("Id: 1 name: MyPC, isTurnedOn: True, System: Windows", pc.ToString());
@@ -40,7 +40,7 @@ public class PersonalComputerTest
         [TestMethod]
         public void TurnOffTest()
         {
-            Device pc = new PersonalComputer(1, "MyPC", true, "Windows");
+            Device pc = new PersonalComputer("1", "MyPC", true, "Windows");
             pc.turnOff();
             Assert.AreEqual(false, pc.IsTurnedOn);
             Assert.AreEqual("Id: 1 name: MyPC, isTurnedOn: False, System: Windows", pc.ToString());

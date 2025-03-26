@@ -7,7 +7,7 @@ public class Smartwatch : Device, IPowerNotifier
 {
     public int battery;
 
-    public Smartwatch(int id, string name, bool isTurnedOn, int battery)
+    public Smartwatch(string id, string name, bool isTurnedOn, int battery)
     {   
         this.id = id;
         Name = name;

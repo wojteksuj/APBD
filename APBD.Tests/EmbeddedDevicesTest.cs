@@ -14,8 +14,8 @@ public class EmbeddedDevicesTest
     [TestMethod]
         public void ConstructorTest()
         {
-            Device device = new EmbeddedDevices(1, "Device1", false, "192.168.0.1", "MD Ltd. Network");
-            Assert.AreEqual(1, device.id);
+            Device device = new EmbeddedDevices("1", "Device1", false, "192.168.0.1", "MD Ltd. Network");
+            Assert.AreEqual("1", device.id);
             Assert.AreEqual("Device1", device.Name);
             Assert.AreEqual(false, device.IsTurnedOn);
             Assert.AreEqual("Id: 1 name: Device1, isTurnedOn: False, ipAdress: 192.168.0.1, networkName: MD Ltd. Network", device.ToString());
@@ -25,7 +25,7 @@ public class EmbeddedDevicesTest
         [ExpectedException(typeof(ArgumentException))]
         public void InvalidIpExceptionTest()
         {
-            Device device = new EmbeddedDevices(1, "Device1", false, "wrongIp!!", "MD Ltd. Network");
+            Device device = new EmbeddedDevices("1", "Device1", false, "wrongIp!!", "MD Ltd. Network");
             
         }
 
@@ -33,14 +33,14 @@ public class EmbeddedDevicesTest
         [ExpectedException(typeof(ConnectionException))]
         public void ConnectionExceptionTest()
         {
-            Device device = new EmbeddedDevices(1, "Device1", false, "192.168.0.1", "Wrong Network");
+            Device device = new EmbeddedDevices("1", "Device1", false, "192.168.0.1", "Wrong Network");
             device.turnOn();
         }
 
         [TestMethod]
         public void TurnOnTest()
         {
-            Device device = new EmbeddedDevices(1, "Device1", false, "192.168.0.1", "MD Ltd. Network");
+            Device device = new EmbeddedDevices("1", "Device1", false, "192.168.0.1", "MD Ltd. Network");
             device.turnOn();
             Assert.AreEqual(true, device.IsTurnedOn);
             Assert.AreEqual("Id: 1 name: Device1, isTurnedOn: True, ipAdress: 192.168.0.1, networkName: MD Ltd. Network", device.ToString());
@@ -49,7 +49,7 @@ public class EmbeddedDevicesTest
         [TestMethod]
         public void TurnOffTest()
         {
-            Device device = new EmbeddedDevices(1, "Device1", true, "192.168.0.1", "MD Ltd. Network");
+            Device device = new EmbeddedDevices("1", "Device1", true, "192.168.0.1", "MD Ltd. Network");
             device.turnOff();
             Assert.AreEqual(false, device.IsTurnedOn);
             Assert.AreEqual("Id: 1 name: Device1, isTurnedOn: False, ipAdress: 192.168.0.1, networkName: MD Ltd. Network", device.ToString());

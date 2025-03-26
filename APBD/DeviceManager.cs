@@ -19,59 +19,36 @@ public class DeviceManager
                     line = ln.Split(',');
                     if (line[0].StartsWith("SW-"))
                     {
-                        char lastChar = line[0][^1];
-                        if (int.TryParse(lastChar.ToString(), out int result))
-                        {
-                            int id = result;
-                            string name = line[1];
-                            bool isTurnedOn = bool.Parse(line[2]);
-                            int battery = int.Parse(line[3].Replace("%", ""));
-                            Device newSw = new Smartwatch(id, name, isTurnedOn, battery);
-                            if (devices.Count < 15) devices.Add(newSw);
-                            else throw new Exception("Too many devices");
-                        }
-                        else
-                        {
-                            throw new Exception("Wrong input format");
-                        }
+                        string id = line[0];
+                        string name = line[1];
+                        bool isTurnedOn = bool.Parse(line[2]);
+                        int battery = int.Parse(line[3].Replace("%", ""));
+                        Device newSw = new Smartwatch(id, name, isTurnedOn, battery);
+                        if (devices.Count < 15) devices.Add(newSw);
+                        else throw new Exception("Too many devices");
                     }
                     else if (line[0].StartsWith("P-"))
                     {
-                        char lastChar = line[0][^1];
-                        if (int.TryParse(lastChar.ToString(), out int result))
-                        {
-                            int id = result;
-                            string name = line[1];
-                            bool isTurnedOn = bool.Parse(line[2]);
-                            string system = null;
-                            if (line.Length > 3) system = line[3];
-                            Device newPc = new PersonalComputer(id, name, isTurnedOn, system);
-                            if (devices.Count < 15) devices.Add(newPc);
-                            else throw new Exception("Too many devices");
-                        }
-                        else
-                        {
-                            throw new Exception("Wrong input format");
-                        }
+                        string id = line[0];
+                        string name = line[1];
+                        bool isTurnedOn = bool.Parse(line[2]);
+                        string system = null;
+                        if (line.Length > 3) system = line[3];
+                        Device newPc = new PersonalComputer(id, name, isTurnedOn, system);
+                        if (devices.Count < 15) devices.Add(newPc);
+                        else throw new Exception("Too many devices");
                     }
                     else if (line[0].StartsWith("ED-"))
                     {
-                        char lastChar = line[0][^1];
-                        if (int.TryParse(lastChar.ToString(), out int result))
-                        {
-                            int id = result;
+                        string id = line[0];
+                        
                             string name = line[1];
                             string ipAddress = line[2];
                             string networkName = line[3];
                             Device newEd = new EmbeddedDevices(id, name, false, ipAddress, networkName);
                             if (devices.Count < 15) devices.Add(newEd);
                             else throw new Exception("Too many devices");
-                        }
-                        else
-                        {
-                            throw new Exception("Wrong input format");
-                        }
-
+                        
                     }
                     else continue;
                 }
@@ -99,7 +76,7 @@ public class DeviceManager
     {
         try
         {
-            if(devices.Count < 15) devices.Add(device);
+            if (devices.Count < 15) devices.Add(device);
             else throw new Exception("Too many devices");
         }
         catch (Exception e)
@@ -112,9 +89,8 @@ public class DeviceManager
     {
         try
         {
-            if(devices.Contains(device)) devices.Remove(device);
+            if (devices.Contains(device)) devices.Remove(device);
             else throw new Exception("Device not found");
-
         }
         catch (Exception e)
         {
@@ -148,16 +124,15 @@ public class DeviceManager
             {
                 throw new FileNotFoundException("File not found");
             }
-            
-            
         }
         catch (Exception e)
         {
             Console.WriteLine(e.Message);
         }
     }
-    
-    public void editDeviceData(Device device, string newName = null, bool? isTurnedOn = null, int? battery = null, string newSystem = null, string newIpAddress = null, string newNetworkName = null)
+
+    public void editDeviceData(Device device, string newName = null, bool? isTurnedOn = null, int? battery = null,
+        string newSystem = null, string newIpAddress = null, string newNetworkName = null)
     {
         try
         {
@@ -165,7 +140,7 @@ public class DeviceManager
             {
                 throw new Exception("Device not found in the list");
             }
-            
+
             if (!string.IsNullOrEmpty(newName))
             {
                 device.Name = newName;
@@ -178,7 +153,7 @@ public class DeviceManager
                 else
                     device.turnOff();
             }
-            
+
             if (device is Smartwatch smartwatch && battery.HasValue)
             {
                 if (battery < 0 || battery > 100)
@@ -203,8 +178,4 @@ public class DeviceManager
             Console.WriteLine(e.Message);
         }
     }
-
-    
-    
-    
 }
