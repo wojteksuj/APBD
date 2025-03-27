@@ -1,13 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using APBD;
+using APBD.Factories;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace APBD.Tests;
-
-[TestClass]
-public class DeviceManagerTest
+namespace APBD.Tests
 {
+    [TestClass]
+    public class DeviceManagerTest
+    {
         private string CreateTempFile(string[] lines)
         {
             string filePath = Path.GetTempFileName();
@@ -15,37 +17,51 @@ public class DeviceManagerTest
             return filePath;
         }
 
+        private DeviceManager InitializeDeviceManager(string[] fileLines)
+        {
+            var factories = new Dictionary<string, DeviceFactory>
+            {
+                { "SW", new SmartwatchFactory() },
+                { "P", new PersonalComputerFactory() },
+                { "ED", new EmbeddedDeviceFactory() }
+            };
+            var deviceFileManager = new DeviceFileManager(CreateTempFile(fileLines));
+            return new DeviceManager(deviceFileManager, factories);
+        }
+
         [TestMethod]
         public void AddDeviceTest()
         {
-            DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
+            DeviceManager deviceManager = InitializeDeviceManager(new string[0]);
             Device smartwatch = new Smartwatch("SW-1", "Watch", true, 90);
-            
-            deviceManager.addDevice(smartwatch);
-            
+
+            deviceManager.AddDevice(smartwatch);
+
             Assert.IsTrue(deviceManager.devices.Contains(smartwatch));
         }
 
         [TestMethod]
         public void LimitDevicesTest()
         {
-            DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
-            
+            DeviceManager deviceManager = InitializeDeviceManager(new string[0]);
+
             for (int i = 0; i < 20; i++)
             {
-                deviceManager.addDevice(new Smartwatch("SW-" + i.ToString(), "WatchNo." + i, true, 80));
+                deviceManager.AddDevice(new Smartwatch($"SW-{i}", $"WatchNo.{i}", true, 80));
             }
-            Assert.IsTrue(deviceManager.devices.Count == 15);
+
+            Assert.AreEqual(15, deviceManager.devices.Count);  
         }
 
         [TestMethod]
         public void RemoveDeviceTest()
         {
             Device smartwatch = new Smartwatch("SW-1", "Watch", true, 90);
-            DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
-            deviceManager.addDevice(smartwatch);
-            
-            deviceManager.removeDevice(smartwatch);
+            DeviceManager deviceManager = InitializeDeviceManager(new string[0]);
+
+            deviceManager.AddDevice(smartwatch);
+            deviceManager.RemoveDevice(smartwatch);
+
             Assert.IsFalse(deviceManager.devices.Contains(smartwatch));
         }
 
@@ -53,10 +69,11 @@ public class DeviceManagerTest
         public void TurnOnDeviceTest()
         {
             Device smartwatch = new Smartwatch("SW-1", "Watch", false, 90);
-            DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
-            deviceManager.addDevice(smartwatch);
-            
-            deviceManager.turnOnDevice(smartwatch);
+            DeviceManager deviceManager = InitializeDeviceManager(new string[0]);
+
+            deviceManager.AddDevice(smartwatch);
+            deviceManager.TurnOnDevice(smartwatch);
+
             Assert.IsTrue(smartwatch.IsTurnedOn);
         }
 
@@ -64,10 +81,11 @@ public class DeviceManagerTest
         public void TurnOffDeviceTest()
         {
             Device smartwatch = new Smartwatch("SW-1", "Watch", true, 90);
-            DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
-            deviceManager.addDevice(smartwatch);
-            
-            deviceManager.turnOffDevice(smartwatch);
+            DeviceManager deviceManager = InitializeDeviceManager(new string[0]);
+
+            deviceManager.AddDevice(smartwatch);
+            deviceManager.TurnOffDevice(smartwatch);
+
             Assert.IsFalse(smartwatch.IsTurnedOn);
         }
 
@@ -75,56 +93,66 @@ public class DeviceManagerTest
         public void EditDeviceBatteryTest()
         {
             Smartwatch smartwatch = new Smartwatch("SW-1", "Watch", true, 90);
-            DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
-            deviceManager.addDevice(smartwatch);
-            
-            deviceManager.editDeviceData(smartwatch, battery: 80);
-            
-            Assert.AreEqual(80, smartwatch.battery);
+            DeviceManager deviceManager = InitializeDeviceManager(new string[0]);
+
+            deviceManager.AddDevice(smartwatch);
+            deviceManager.EditDeviceData(smartwatch, battery: 80);
+
+            Assert.AreEqual(80, smartwatch.battery);  
         }
 
         [TestMethod]
         public void EditDeviceDataSystemTest()
         {
-            PersonalComputer pc = new PersonalComputer("SW-1", "PC", true, "Windows");
-            DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
-            deviceManager.addDevice(pc);
-            deviceManager.editDeviceData(pc, newSystem: "Linux");
-            
-            Assert.AreEqual("Linux", pc.system);
+            PersonalComputer pc = new PersonalComputer("P-1", "PC", true, "Windows");
+            DeviceManager deviceManager = InitializeDeviceManager(new string[0]);
+
+            deviceManager.AddDevice(pc);
+            deviceManager.EditDeviceData(pc, newSystem: "Linux");
+
+            Assert.AreEqual("Linux", pc.system);  
         }
 
         [TestMethod]
         public void EditDeviceDataIpAddressTest()
         {
-            EmbeddedDevices embeddedDevice = new EmbeddedDevices("SW-1", "ED", true, "192.168.1.1", "MD Ltd.");
-            DeviceManager deviceManager = new DeviceManager(CreateTempFile(new string[0]));
-            deviceManager.addDevice(embeddedDevice);
-            deviceManager.editDeviceData(embeddedDevice, newIpAddress: "192.168.1.2");
-            
-            Assert.AreEqual("192.168.1.2", embeddedDevice.IpAddress);
+            EmbeddedDevices embeddedDevice = new EmbeddedDevices("ED-1", "ED", true, "192.168.1.1", "MD Ltd.");
+            DeviceManager deviceManager = InitializeDeviceManager(new string[0]);
+
+            deviceManager.AddDevice(embeddedDevice);
+            deviceManager.EditDeviceData(embeddedDevice, newIpAddress: "192.168.1.2");
+
+            Assert.AreEqual("192.168.1.2", embeddedDevice.IpAddress);  
         }
 
         [TestMethod]
         public void SaveDataToFileTest()
         {
-            var tempFilePath = CreateTempFile(new string[0]);
-            DeviceManager deviceManager = new DeviceManager(tempFilePath);
-            Device smartwatch = new Smartwatch("SW-1", "Watch", true, 90);
-            Device  pc = new PersonalComputer("SW-1", "PC", true, "Windows");
-            Device  embeddedDevice = new EmbeddedDevices("SW-1", "ED", true, "192.168.1.1", "MD Ltd.");
+            var factories = new Dictionary<string, DeviceFactory>
+            {
+                { "SW", new SmartwatchFactory() },
+                { "P", new PersonalComputerFactory() },
+                { "ED", new EmbeddedDeviceFactory() }
+            };
 
-            deviceManager.addDevice(smartwatch);
-            deviceManager.addDevice(pc);
-            deviceManager.addDevice(embeddedDevice);
             
-            deviceManager.saveDataToFile(tempFilePath);
+            DeviceFileManager deviceFileManager = new DeviceFileManager(CreateTempFile(new string[0]));
+            DeviceManager deviceManager = new DeviceManager(deviceFileManager, factories);
+
             
-            string[] savedLines = File.ReadAllLines(tempFilePath);
-            Assert.AreEqual(3, savedLines.Length); 
+            Device smartwatch = new Smartwatch("SW-1", "Watch", true, 90);
+            Device pc = new PersonalComputer("P-1", "PC", true, "Windows");
+            Device embeddedDevice = new EmbeddedDevices("ED-1", "ED", true, "192.168.1.1", "MD Ltd.");
+
+            deviceManager.AddDevice(smartwatch);
+            deviceManager.AddDevice(pc);
+            deviceManager.AddDevice(embeddedDevice);
+            
+            deviceManager.SaveDataToFile();
+
+            
+            string[] savedLines = File.ReadAllLines(deviceFileManager.getFilePath());
+            Assert.AreEqual(3, savedLines.Length);  
         }
+    }
 }
-    
-    
-    
-    
