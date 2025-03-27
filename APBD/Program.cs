@@ -7,7 +7,7 @@ try
     deviceManager.showAllDevices();
 
     Console.WriteLine("----------Adding new device!----------");
-    Device newDevice = new Smartwatch("SW-2", "Apple Watch 4", false, 110);
+    Device newDevice = new Smartwatch("SW-2", "Apple Watch 4", false, 80);
     deviceManager.addDevice(newDevice);
     deviceManager.showAllDevices();
 

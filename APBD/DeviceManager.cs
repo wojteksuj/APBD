@@ -1,10 +1,15 @@
 using System.Linq.Expressions;
+using APBD.Factories;
 
 namespace APBD;
 
 public class DeviceManager
 {
     public List<Device> devices = new List<Device>();
+    private DeviceFactory swFactory = new SmartwatchFactory();
+    private DeviceFactory pcFactory = new PersonalComputerFactory();
+    private DeviceFactory edFactory = new EmbeddedDeviceFactory();
+    
 
     public DeviceManager(string filepath)
     {
@@ -23,7 +28,7 @@ public class DeviceManager
                         string name = line[1];
                         bool isTurnedOn = bool.Parse(line[2]);
                         int battery = int.Parse(line[3].Replace("%", ""));
-                        Device newSw = new Smartwatch(id, name, isTurnedOn, battery);
+                        Device newSw = swFactory.CreateDevice(id, name, isTurnedOn, battery);
                         if (devices.Count < 15) devices.Add(newSw);
                         else throw new Exception("Too many devices");
                     }
@@ -34,7 +39,7 @@ public class DeviceManager
                         bool isTurnedOn = bool.Parse(line[2]);
                         string system = null;
                         if (line.Length > 3) system = line[3];
-                        Device newPc = new PersonalComputer(id, name, isTurnedOn, system);
+                        Device newPc = pcFactory.CreateDevice(id, name, isTurnedOn, system: system);
                         if (devices.Count < 15) devices.Add(newPc);
                         else throw new Exception("Too many devices");
                     }
@@ -45,7 +50,7 @@ public class DeviceManager
                             string name = line[1];
                             string ipAddress = line[2];
                             string networkName = line[3];
-                            Device newEd = new EmbeddedDevices(id, name, false, ipAddress, networkName);
+                            Device newEd = edFactory.CreateDevice(id, name, isTurnedOn: false, ipAddress: ipAddress, networkName: networkName);
                             if (devices.Count < 15) devices.Add(newEd);
                             else throw new Exception("Too many devices");
                         
